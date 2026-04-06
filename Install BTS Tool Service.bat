@@ -1,38 +1,55 @@
 @echo off
 chcp 65001 >nul
-:: ============================================================
-::  Create Desktop Shortcut for ToolService Web App
-::  URL: https://smocsthbts-ui.github.io/ToolService/
-:: ============================================================
+title Install BTS Tool Service
 
-setlocal
+echo.
+echo  ====================================================
+echo   BTS Tool Service - Desktop Installer
+echo  ====================================================
+echo.
+echo   This will create a shortcut on your Desktop.
+echo   URL: https://smocsthbts-ui.github.io/ToolService/
+echo.
+echo  Press any key to start installation...
+pause >nul
 
-set "APP_NAME=ToolService"
+:: --- Variables ---
+set "APP_NAME=BTS Tool Service"
 set "APP_URL=https://smocsthbts-ui.github.io/ToolService/"
-set "DESKTOP=%USERPROFILE%\Desktop"
+set "DESKTOP=%PUBLIC%\Desktop"
 set "SHORTCUT=%DESKTOP%\%APP_NAME%.lnk"
-
-:: Windows built-in icon (shell32.dll index 14 = Globe/Internet)
 set "ICON_PATH=shell32.dll"
 set "ICON_INDEX=14"
 
+:: --- Check Edge installed ---
 echo.
-echo  ====================================================
-echo   Creating Shortcut: %APP_NAME%
-echo  ====================================================
-echo.
+echo  [1/3] Checking Microsoft Edge...
+if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
+    set "EDGE_PATH=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
+    echo        Edge found.
+) else if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
+    set "EDGE_PATH=%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"
+    echo        Edge found.
+) else (
+    echo.
+    echo   [ERROR] Microsoft Edge not found.
+    echo   Please install Edge from https://www.microsoft.com/edge
+    echo.
+    pause
+    exit /b 1
+)
 
-echo  [1/2] Creating Desktop Shortcut...
+:: --- Create Shortcut ---
+echo  [2/3] Creating Desktop Shortcut...
 
-set "VBS_TEMP=%TEMP%\make_shortcut_%APP_NAME%.vbs"
+set "VBS_TEMP=%TEMP%\install_bts_tool.vbs"
 
 (
     echo Set oWS = WScript.CreateObject^("WScript.Shell"^)
-    echo sLinkFile = "%SHORTCUT%"
-    echo Set oLink = oWS.CreateShortcut^(sLinkFile^)
-    echo oLink.TargetPath = "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
+    echo Set oLink = oWS.CreateShortcut^("%SHORTCUT%"^)
+    echo oLink.TargetPath = "%EDGE_PATH%"
     echo oLink.Arguments = "--app=%APP_URL%"
-    echo oLink.Description = "%APP_NAME% Web App"
+    echo oLink.Description = "BTS Tool Service Web App"
     echo oLink.IconLocation = "%ICON_PATH%, %ICON_INDEX%"
     echo oLink.WorkingDirectory = "%USERPROFILE%"
     echo oLink.Save
@@ -41,23 +58,24 @@ set "VBS_TEMP=%TEMP%\make_shortcut_%APP_NAME%.vbs"
 cscript //nologo "%VBS_TEMP%"
 del "%VBS_TEMP%" 2>nul
 
-echo  [2/2] Checking result...
+:: --- Result ---
+echo  [3/3] Checking result...
 
 if exist "%SHORTCUT%" (
     echo.
     echo  ====================================================
-    echo   [SUCCESS] Shortcut created!
-    echo   Path: %SHORTCUT%
+    echo   [SUCCESS] Installation Complete!
+    echo   Shortcut: %SHORTCUT%
     echo  ====================================================
     echo.
-    echo   Double-click "ToolService" on Desktop
-    echo   Opens in Edge App Mode ^(no Address Bar^)
+    echo   Double-click "BTS Tool Service" on Desktop to launch.
+    echo.
 ) else (
     echo.
     echo   [ERROR] Could not create shortcut.
-    echo   Please make sure Microsoft Edge is installed.
+    echo   Try running this file as Administrator.
+    echo.
 )
 
-echo.
 pause
-endlocal
+exit /b
