@@ -49,7 +49,7 @@ set "VBS_TEMP=%TEMP%\install_bts_tool.vbs"
     echo Set oLink = oWS.CreateShortcut^("%SHORTCUT%"^)
     echo oLink.TargetPath = "%EDGE_PATH%"
     echo oLink.Arguments = "--app=%APP_URL%"
-    echo oLink.Description = "BTS Tool Service Web App"
+    echo oLink.Description = "BTS SMPK Tool Service Web App"
     echo oLink.IconLocation = "%ICON_PATH%, %ICON_INDEX%"
     echo oLink.WorkingDirectory = "%USERPROFILE%"
     echo oLink.Save
@@ -68,7 +68,7 @@ if exist "%SHORTCUT%" (
     echo   Shortcut: %SHORTCUT%
     echo  ====================================================
     echo.
-    echo   Double-click "BTS Tool Service" on Desktop to launch.
+    echo   Double-click "BTS SMPK Tool Service" on Desktop to launch.
     echo.
 ) else (
     echo.
