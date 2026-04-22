@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Install BTS Tool Service
+title Install BTS Tool Service 
 
 echo.
 echo  ====================================================
