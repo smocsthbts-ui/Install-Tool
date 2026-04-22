@@ -14,7 +14,7 @@ echo  Press any key to start installation...
 pause >nul
 
 :: --- Variables ---
-set "APP_NAME=BTS Tool Service"
+set "APP_NAME=BTS SMPK Tool Service"
 set "APP_URL=https://smocsthbts-ui.github.io/ToolService/"
 set "DESKTOP=%PUBLIC%\Desktop"
 set "SHORTCUT=%DESKTOP%\%APP_NAME%.lnk"
